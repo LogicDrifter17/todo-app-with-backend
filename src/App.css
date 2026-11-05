@@ -1,0 +1,76 @@
+*{
+    margin : 0px ;
+    padding : 0px;
+    box-sizing : border-box;
+}
+
+#Container{
+    width : 100%;
+    height : 100vh;
+    display : flex;
+    flex-direction: column;
+   
+}
+#Header{
+    width: 100%;
+    height : 80Px;
+    display : flex;
+    justify-content: center;
+    align-items: center;
+   
+}
+#Footer{
+    width: 100%;
+    height : 80Px;
+    display : flex;
+    justify-content: center;
+    align-items: center;
+   
+}
+#Task_box{
+    width : 50%;
+    height : 250px;
+    border-radius: 10px;
+    overflow-y: scroll;
+}
+#Main{
+    display : flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+
+}
+#Task_search{
+    padding: 20px;
+ 
+}
+#Task_search input {
+    padding : 5px;
+    border-radius: 5px;
+}
+#Task_search button{
+
+    padding : 5px;
+    border-radius: 5px;
+}
+#Edit_button{
+    height: 20px;
+    width :auto;
+
+}
+#Task_Div{
+    height : 50px;
+    width : 100%;
+    display : grid;
+    grid-template-columns: 1fr 25px 25px;
+   
+    text-align : center;
+                
+
+}
+
+
+
+
+
