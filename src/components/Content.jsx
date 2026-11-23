@@ -1,189 +1,233 @@
-import React, { useState } from 'react'
+
+import { useEffect, useState } from 'react';
 import { GrEdit } from "react-icons/gr";
 import { FaDeleteLeft } from "react-icons/fa6";
 
-
 const Content = () => {
-    let [Input,setInput]=useState("")
-    let [Task,setTask] = useState([])
-    let [ButtonText,setButtonText] = useState("add")
-    let [EditTask,setEditTask] = useState("")
-  
 
-     
-  
-   
-     function handleInput(e){
-          setInput (e.target.value);
+    let [Input, setInput] = useState("");
+    let [Task, setTask] = useState([]);
+    let [ButtonText, setButtonText] = useState("add");
+    let [EditId, setEditId] = useState(null);
 
-     }
-     
-async function handleadd() {
+    // GET REQUEST
+    useEffect(() => {
 
-    if (ButtonText === "add") {
+        async function getTasks() {
+            try {
+                const result = await fetch("http://localhost:3000/todo", {
+                    method: "GET",
+                    credentials: "include"
+                });
 
-        try {
+                const response = await result.json();
 
-            const response = await fetch(
-                "http://localhost:3000/todo",
-                {
-                    method: "POST",
+                if (result.ok) {
+                    setTask(response);
+                } else {
+                    console.log(response.message);
+                }
 
+            } catch (error) {
+                console.log("Request failed:", error.message);
+            }
+        }
+
+        getTasks();
+
+    }, []);
+
+    function handleInput(e) {
+        setInput(e.target.value);
+    }
+
+    // POST AND PUT REQUEST
+    async function handleadd() {
+
+        if (ButtonText === "add") {
+
+            try {
+                const response = await fetch(
+                    "http://localhost:3000/todo",
+                    {
+                        method: "POST",
+                        credentials: "include",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            task: Input
+                        })
+                    }
+                );
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    console.log(result.message);
+
+                    setTask((preval) => {
+                        return [...preval, result.Added_Row];
+                    });
+
+                    setInput("");
+
+                } else {
+                    console.log(result.message);
+                }
+
+            } catch (error) {
+                console.log("Request failed:", error.message);
+            }
+        }
+
+        // PUT REQUEST
+        if (ButtonText === "save") {
+
+            try {
+                const response = await fetch("http://localhost:3000/todo", {
+                    method: "PUT",
+                    credentials: "include",
                     headers: {
                         "Content-Type": "application/json"
                     },
-
                     body: JSON.stringify({
-                        task: Input
+                        Updated_Task: Input,
+                        Id: EditId
                     })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    console.log(result.message);
+
+                    setTask((preval) => {
+                        return preval.map((Element) => {
+                            if (Element.id === EditId) {
+                                return result.Updated_Row;
+                            } else {
+                                return Element;
+                            }
+                        });
+                    });
+
+                    setEditId(null);
+                    setButtonText("add");
+                    setInput("");
+
+                } else {
+                    console.log(result.message);
                 }
-            );
 
-            const result = await response.json();
+            } catch (error) {
+                console.log("Request failed:", error.message);
+            }
+        }
+    }
 
-            if (!response.ok) {
-                throw new Error(result.message);
+    // SELECT TASK TO EDIT
+    function handleEdit(element) {
+        setEditId(element.id);
+        setInput(element.task);
+        setButtonText("save");
+    }
+
+    // DELETE REQUEST
+    async function handleDelete(current_element) {
+
+        try {
+            const result = await fetch("http://localhost:3000/todo", {
+                method: "DELETE",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    Id: current_element.id
+                })
+            });
+
+            const response = await result.json();
+
+            if (result.ok) {
+                console.log(response.message);
+
+                setTask((preval) => {
+                    return preval.filter((element) => {
+                        return element.id !== response.Delete_Row.id;
+                    });
+                });
+
+            } else {
+                console.log(response.message);
             }
 
-            console.log(result.message);
- } catch (error) {
-
-            console.log("Error:", error.message);
-
+        } catch (error) {
+            console.log("Request failed:", error.message);
         }
-
-      const response  =  await fetch("http://localhost:3000/todo")
-
-       const result = await response.json()
-        let task = result.map((Element)=>{
-                  return Element.task
-                
-           })
-            
-            setTask(task);
-            setInput("");
-
-       
-
     }
 
-    if (ButtonText === "save") {
-        console.log(Input);
-        async function Edit(){
-           let getresponse = await fetch("http://localhost:3000/todo")
-           let getresult = await getresponse.json()
-         let getid = getresult.find((Element) => {
-    return Element.task === EditTask;
-});
+    return (
+        <>
+            <div id="Main">
 
-let id = getid.id;
-                       
-           
-           let response = await fetch("http://localhost:3000/todo",{
-            method : "PUT",
-           headers: {
-    "Content-Type": "application/json"
-},
-            body : JSON.stringify({
-                Updated_Task : Input,
-                Id : id   
-            })
+                <div id="Task_search">
+                    <center>
 
-            
-           })
-           let updatedresponse = await fetch("http://localhost:3000/todo")
-           let updatedresult = await updatedresponse.json()
-           let updateTask = updatedresult.map((Element)=>{
-                return Element.task
-            
-           })
-              setTask(updateTask);
-            
-        }
-        Edit();
+                        <input
+                            value={Input}
+                            onChange={handleInput}
+                            placeholder="Enter the task"
+                        />
 
+                        <button onClick={handleadd}>
+                            {ButtonText}
+                        </button>
 
-        setButtonText("add");
+                    </center>
+                </div>
 
-        setInput("");
+                <div id="Task_box">
 
-    }
+                    {
+                        Task.map((current_element) => {
+                            return (
+                                <div
+                                    key={current_element.id}
+                                    id="Task_Div"
+                                >
 
-}
-        async function handleEdit(element){
-         setEditTask(element);
-          setInput(element);
-          setButtonText("save")
-          
-       
+                                    {current_element.task}
 
-         
-     }
+                                    <button
+                                        className="Task_buttons"
+                                        onClick={() => {
+                                            handleEdit(current_element);
+                                        }}
+                                    >
+                                        <GrEdit />
+                                    </button>
 
-        function handleDelete(index){
-           
-          let result  = Task.filter((current_Element, Task_Index) => {
-               return Task_Index != index;
-             
-            })
-              setTask(result)
+                                    <button
+                                        className="Task_buttons"
+                                        onClick={() => {
+                                            handleDelete(current_element);
+                                        }}
+                                    >
+                                        <FaDeleteLeft />
+                                    </button>
 
+                                </div>
+                            );
+                        })
+                    }
 
-        }
-  return (
-    <>
-    <div id="Main">
-            <div id="Task_search">
-        <center>
-            <input 
-           value = {Input}
-           onChange={(e)=>{
-                 
-               handleInput(e)} }
-           placeholder='Enter the task'
-        >
-        </input>
-        <button onClick={handleadd}>{ButtonText}</button>
-        </center>
-       
-    </div >
-    <div id="Task_box" >
-     {     
-      Task.map((current_element,index)=>{
-         return (<div 
-         key = {index}
-         id ="Task_Div"
-           >
-            
-             {current_element} 
+                </div>
 
-            <button 
-              className='Task_buttons'
-              onClick={ ()=>{handleEdit(current_element)}}
-                
-            >
-            <GrEdit />
-            </button>
-            <button
-             className='Task_buttons'
-             onClick ={()=>{handleDelete(index)}}
+            </div>
+        </>
+    );
+};
 
-            >
-            <FaDeleteLeft />
-            </button>
-             
-         
-           </div >
-         )
-      })
-      }
-    </div>
-   
-       
-    </div>
-
-    </>
-  )
-}
-
-export default Content
+export default Content;

@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&display=swap');
 *{
     margin : 0px ;
     padding : 0px;
@@ -9,29 +10,32 @@
     height : 100vh;
     display : flex;
     flex-direction: column;
-   
 }
 #Header{
     width: 100%;
-    height : 80Px;
+    height : 5%;
     display : flex;
     justify-content: center;
-    align-items: center;
-   
+    align-items: center;  
+    background-color: chocolate;
+}
+#Header button{
+ margin-left : auto;
 }
 #Footer{
     width: 100%;
-    height : 80Px;
+    height : auto;
     display : flex;
     justify-content: center;
     align-items: center;
-   
+    background-color: chocolate;
 }
 #Task_box{
     width : 50%;
     height : 250px;
     border-radius: 10px;
     overflow-y: scroll;
+    background-color: bisque;
 }
 #Main{
     display : flex;
@@ -39,36 +43,140 @@
     justify-content: center;
     align-items: center;
     flex-grow: 1;
-
+    background-color: aqua;
+    overflow-y: auto;
 }
 #Task_search{
     padding: 20px;
- 
 }
 #Task_search input {
     padding : 5px;
     border-radius: 5px;
 }
 #Task_search button{
-
     padding : 5px;
     border-radius: 5px;
-}
-#Edit_button{
-    height: 20px;
-    width :auto;
-
 }
 #Task_Div{
     height : 50px;
     width : 100%;
     display : grid;
-    grid-template-columns: 1fr 25px 25px;
-   
+    grid-template-columns: 1fr 25px 25px;  
     text-align : center;
-                
-
 }
+#Login_Container{
+    display : flex ;
+    justify-content: center;
+    align-items: center;
+    height : 100vh ;
+    width : 100%;
+   
+   
+}
+
+#Login_Box{
+    height : auto;
+    width : 50%;
+    display : flex;
+    flex-direction: column;
+    gap : 20px;
+    padding : 10px;
+    border-radius : 5px;
+background-color:#FFEB7A;
+transform: rotate(-5deg);  
+position : relative;
+font-family: 'Caveat';
+ box-shadow: -20px 20px 30px 10px rgba(0, 0, 0, 0.366) ;
+ border-radius: 0 0 50px 0;
+}
+#Login_Box::before{
+    position : absolute;
+    content : "";
+    background-color:  #f3cb06;
+    width : 20%;
+    height : 10%;
+    top : -15px;
+    left : 50%;
+    transform: translateX(-50%) rotate(5deg);
+}
+#Login_Box::after{
+    position : absolute;
+    content : "";
+    bottom : 0 ;
+    right : 0;
+    width : 50px;
+    height : 50px;
+    background :radial-gradient(ellipse at top left,
+                                 #f3cb06 50%,
+                                  #bb82059b 100%);
+    border-radius: 5px 0 0 0;
+    border-width : 1px 0px 0px 1px;
+    border-style : solid;
+    border-color : black;
+    clip-path: polygon(0 0 , 10% 50%, 0 100%, 100% 100%, 100% 0,50% 10%);
+   
+}
+
+#Login_Box input{
+    width : 100%;
+    border-radius: 5px;
+    border : none;
+    border-bottom: 2px dashed #5A3D00;
+    background-color: #f3cb06;
+    padding : 5px;
+    
+   
+}
+#Login_buttons{
+    display : flex;
+    justify-content: space-evenly;
+    margin-right:100px;
+}
+#Login_buttons button{
+     padding: 10px;
+     border-radius: 10px;
+}
+#Login_heading{
+    text-align: center;
+}
+#New_Account{
+    height : 100vh;
+    width : 100%;
+    display : flex;
+    justify-content: center;
+    align-items : center;   
+}
+#NewAccount_Container{
+    height : aut0;
+    background-color:#FFEB7A;
+    padding : 20px;
+    border-radius: 5px;
+    transform: rotate(-10deg);
+}
+#Create_Account_Button{
+    display : flex ;
+    justify-content : center;
+    align-items : center; 
+    padding : 15px;
+}
+#Create_Account_Button button{
+    padding : 10px;
+    border-radius : 5px;
+}
+#NewAccount_Heading{
+  padding : 15px; 
+}
+#NewAccount_Details{
+    display : flex;
+    flex-direction: column;
+    gap :10px;
+}
+#Login_Box input:-webkit-autofill,
+#Login_Box input:-webkit-autofill:hover,
+#Login_Box input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 1000px #efe3a5 inset;
+}
+    
 
 
 
